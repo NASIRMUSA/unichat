@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <title>UniChat</title>
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="card" style="max-width: 500px; margin: auto;">
+            <div class="card-header">
+                <h3>Create Post</h3>
+            </div>
+            <div class="card-body">
+                <form id="postForm">
+                    <div class="mb-3">
+                        <textarea class="form-control" id="postContent" rows="3" placeholder="What's on your mind?" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <input type="file" class="form-control" id="postImage">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Post</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+    <script>
+  document.getElementById('postForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const postContent = document.getElementById('postContent').value.trim();
+        const postImage = document.getElementById('postImage').files[0];
+
+        if (!postContent && !postImage) {
+            alert("Please enter text or upload an image.");
+            return;
+        }
+
+        function savePost(post) {
+            let posts = JSON.parse(localStorage.getItem('posts')) || [];
+            posts.push(post);
+            localStorage.setItem('posts', JSON.stringify(posts));
+            window.location.href = 'index.html';
+        }
+
+        if (postImage) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const imageId = `image_${Date.now()}`; // Unique image key
+                sessionStorage.setItem(imageId, event.target.result); // Store image in sessionStorage
+
+                savePost({
+                    content: postContent,
+                    imageId: imageId // Store reference to image
+                });
+            };
+            reader.readAsDataURL(postImage); // Convert image to Base64
+        } else {
+            savePost({
+                content: postContent,
+                imageId: null
+            });
+        }
+    });
+function renderPosts() {
+    const postContainer = document.getElementById('postContainer');
+    postContainer.innerHTML = ''; // Clear previous posts
+
+    let posts = JSON.parse(localStorage.getItem('posts')) || [];
+
+    if (posts.length === 0) {
+        postContainer.innerHTML = '<p class="text-center">No posts available.</p>';
+        return;
+    }
+
+    posts.reverse().forEach(post => {
+        const postElement = document.createElement('div');
+        postElement.classList.add('card', 'mb-3', 'shadow-sm');
+
+        let postContent = `
+            <div class="card-body">
+                <p class="card-text">${post.content || ''}</p>
+        `;
+
+        if (post.image) {
+            postContent += `<img src="${post.image}" class="img-fluid rounded mt-2" alt="Post Image">`;
+        }
+
+        postContent += `</div>`;
+        postElement.innerHTML = postContent;
+        postContainer.appendChild(postElement);
+    });
+}
+
+    </script>
+    
+</body>
+</html>

@@ -1,0 +1,84 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+body{
+    font-family: "Poppins", serif;
+    font-weight: 100;
+    font-style: normal;
+    background: rgb(2,0,36);
+    /* background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(52,85,192,1) 0%, rgba(174,25,172,1) 100%);  */
+}
+.bg{
+    background: rgb(2,0,36);
+    background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(52,85,192,1) 0%, rgba(174,25,172,1) 100%); 
+}
+.navbar-brand h1{
+    font-weight: 600;
+    color: white;
+}
+.navbar-brand{
+    align-items: center;
+}
+.bi-person-fill-lock{
+    font-size: 30px;
+    color: white;
+    margin-left: 50px;
+}
+.header-canva{
+    width: 100%;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between important; 
+    align-items: center;
+}
+.header-canva h3{
+    margin-left: 20px;
+}
+.bi-arrow-left{
+    font-size: 30px;
+    cursor: pointer;
+}
+.bi-search{
+    font-size: 25px;
+    cursor: pointer;
+}
+content {
+    padding: 20px;
+    margin-bottom: 60px; /* Ensure content doesn't overlap with the menu */
+}
+
+.mobile-menu {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    padding: 10px;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.mobile-menu a {
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    text-align: center;
+    flex: 1;
+}
+
+.mobile-menu a:hover {
+    background-color: #575757;
+}
+.bottom-icon {
+    font-size: 30px;
+    color: white;
+    cursor: pointer;
+}
+.post{
+    font-size: 48px;
+}
+.post-icon{
+    font-size: 30px;
+}

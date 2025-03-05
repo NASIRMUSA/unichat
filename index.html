@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="node_modules/bootstrap-icons/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <title>UniChat</title>
+</head>
+<body>
+    <nav class="navbar bg ">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#"><h1>UniChat</h1></a>
+         <a href="register.html"> <i class="bi bi-person-fill-lock"></i></a>
+          <button class="navbar-toggler" style="color: white  !important;" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon" id="icon" style="color: white  !important;"> </span>
+          </button>
+          <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+            <div class="offcanvas-header d-flex justify-content-between">
+                <i class="bi bi-arrow-left" data-bs-dismiss="offcanvas" aria-label="Close" ></i>
+                <h3 class="mr-3">Menu</h3>
+                <i class="bi bi-search"></i>
+            </div>
+            <div class="offcanvas-body">
+                <div class="shadow p-3 mb-5  w-100 rounded d-flex justify-content-around">
+                    <img src="person2.jpg" alt="User Avatar" class="rounded-circle me-3" style="width: 40px; height: 30px;">
+                        <h5 class="h5">Jhon Due</h5>
+                    <button type="button" class="btn btn-white shadow-sm"
+                    style="--bs-btn-padding-y: .35rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">
+              Profile view
+            </button>
+                </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+
+      <div class="container mt-5" id="postContainer">
+        <!-- Posts will be rendered here -->
+    </div>
+
+    <div class="mobile-menu bg d-flex justify-content-between align-items-center">
+        <i class="bottom-icon bi bi-house-door-fill" onclick="window.location.href='index.html'"></i>
+        <i class="bottom-icon bi bi-people-fill" onclick="window.location.href='profile.html'"></i>
+        <i class="bottom-icon post bi bi-plus-circle" onclick="window.location.href='post.html'"></i>
+        <i class="bottom-icon bi bi-bell-fill"></i>
+        <i class="bottom-icon bi-play-btn" onclick="window.location.href='reels.html'"></i>
+    </div>
+    <script src="node_modules/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const postContainer = document.getElementById('postContainer');
+            const posts = JSON.parse(localStorage.getItem('posts')) || [];
+
+            posts.forEach(post => {
+                const postElement = document.createElement('div');
+                postElement.className = 'card mb-3';
+                postElement.style.maxWidth = '500px';
+                postElement.style.margin = 'auto';
+
+                const postContent = document.createElement('div');
+                postContent.className = 'card-body';
+                postContent.innerHTML = `<p>${post.content}</p>`;
+
+                if (post.image) {
+                    const postImage = document.createElement('img');
+                    postImage.src = post.image;
+                    postImage.className = 'card-img-top';
+                    postContent.appendChild(postImage);
+                }
+
+                postElement.appendChild(postContent);
+                postContainer.appendChild(postElement);
+            });
+        });
+        document.addEventListener('DOMContentLoaded', function () {
+    renderPosts();
+});
+
+function renderPosts() {
+    const postContainer = document.getElementById('postContainer');
+    postContainer.innerHTML = ''; // Clear previous posts
+
+    let posts = JSON.parse(localStorage.getItem('posts')) || [];
+
+    if (posts.length === 0) {
+        postContainer.innerHTML = '<p class="text-center">No posts available.</p>';
+        return;
+    }
+
+    posts.reverse().forEach(post => {
+        const postElement = document.createElement('div');
+        postElement.classList.add('card', 'mb-3', 'shadow-sm');
+
+        let postContent = `
+            <div class="card-body">
+                <p class="card-text">${post.content || ''}</p>
+        `;
+
+        if (post.imageId) {
+            const imageData = sessionStorage.getItem(post.imageId);
+            if (imageData) {
+                postContent += `<img src="${imageData}" class="img-fluid rounded mt-2" alt="Post Image">`;
+            }
+        }
+
+        postContent += `</div>`;
+        postElement.innerHTML = postContent;
+        postContainer.appendChild(postElement);
+    });
+}
+
+
+    </script>
+</body>
+</html>
